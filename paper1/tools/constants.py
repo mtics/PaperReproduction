@@ -1,0 +1,4 @@
+ETA = 0.25
+RATE = 0.2
+LAMBDA = 1
+EPSILON = 0.01
