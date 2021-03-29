@@ -39,8 +39,8 @@ def MCb(Z0, X, Y, b0, mu0, tau_b, tau_z):
             U, Sigma, VT = la.svd(A)
             S = np.zeros((U.shape[1], VT.shape[0]))
             for i in range(0, Sigma.size):
-                # S[i][i] = max(Sigma[i] - tau_z * mu, 0)
-                S[i][i] = max(Sigma[i] - mu, 0)
+                S[i][i] = max(Sigma[i] - tau_z * mu, 0)
+                # S[i][i] = max(Sigma[i] - mu, 0)
 
             Z = U @ S @ VT
 
@@ -97,3 +97,15 @@ def gz(Z, X, Y, b):
                 Zc[i, j] = 0
 
     return Zc
+
+
+def getW(Z, b):
+    Y = Z[0:globals.colY, :]
+    X = Z[globals.colY:, :]
+
+    for j in range(globals.rowY):
+        Y[:, j] = Y[:, j] - b
+
+    W = Y@la.pinv(X)
+
+    return W

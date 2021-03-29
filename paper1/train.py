@@ -41,6 +41,7 @@ if __name__ == "__main__":
     tau_b = 3.8 * globals.omegaY / (constants.LAMBDA * Y.shape[0])
 
     Z0 = np.concatenate([incompleteY.T, incompleteX.T], axis=0).astype(dtype=float)
+    orgZ = np.concatenate([Y.T, X.T], axis=0).astype(dtype=float)
 
     U, S, VT = la.svd(Z0)
     mu = S.max() * constants.ETA
@@ -51,6 +52,9 @@ if __name__ == "__main__":
     np.savetxt("output/Z.txt", newZ)
     np.savetxt("output/b.txt", newb)
 
-    print(newZ)
+    W = MCb.getW(newZ, newb)
+    np.savetxt("output/W.txt", W)
 
-    print(newb)
+    err = tools.evaluation(orgZ, newZ)
+
+    print(err)

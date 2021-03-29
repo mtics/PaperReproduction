@@ -1,6 +1,7 @@
 from scipy.io import arff
 import pandas as pd
 import random
+from tools import globals
 
 
 def getDataFromArff(filepath):
@@ -44,3 +45,19 @@ def mask(mat, corruptedPosition, rate):
         num -= 1
 
     return cmat
+
+
+def evaluation(orgZ, newZ):
+    orgX = orgZ[globals.colY:, :].astype(float)
+    newX = newZ[globals.colY:, :].astype(float)
+
+    total = 0
+    su = 0
+
+    for i in range(orgX.shape[0]):
+        for j in range(orgX.shape[1]):
+            total += orgX[i, j] ** 2
+            if globals.corruptedPositionX.T[i, j] == 1:
+                su += (orgX[i, j] - newX[i, j]) ** 2
+
+    return su / total
