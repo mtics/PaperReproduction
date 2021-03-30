@@ -47,7 +47,7 @@ def mask(mat, corruptedPosition, rate):
     return cmat
 
 
-def evaluation(orgZ, newZ):
+def relativeFeatureImputationError(orgZ, newZ):
     orgX = orgZ[globals.colY:, :].astype(float)
     newX = newZ[globals.colY:, :].astype(float)
 
@@ -61,3 +61,17 @@ def evaluation(orgZ, newZ):
                 su += (orgX[i, j] - newX[i, j]) ** 2
 
     return su / total
+
+
+def transductiveLabelError(orgZ, newZ):
+    orgY = orgZ[:globals.colY, :].astype(float)
+    newY = newZ[:globals.colY, :].astype(float)
+
+    total = 0
+
+    for i in range(orgY.shape[0]):
+        for j in range(orgY.shape[1]):
+            if newY - orgY != 0:
+                total += 1
+
+    return total / (globals.sizeY - globals.omegaY)

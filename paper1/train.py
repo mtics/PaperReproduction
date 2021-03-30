@@ -55,6 +55,7 @@ if __name__ == "__main__":
     W = MCb.getW(newZ, newb)
     np.savetxt("output/W.txt", W)
 
-    err = tools.evaluation(orgZ, newZ)
+    rfie = tools.relativeFeatureImputationError(orgZ, newZ)
+    tle = tools.transductiveLabelError(orgZ, newZ)
 
-    print(err)
+    print("Relative feature Imputation Error: %f \n Transductive Label Error: %f" %(rfie, tle))

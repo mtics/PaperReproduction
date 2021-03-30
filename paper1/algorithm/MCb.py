@@ -27,7 +27,7 @@ def MCb(Z0, X, Y, b0, mu0, tau_b, tau_z):
         iters_while = 0
 
         loss = 65535
-        while loss > 1e-5 and iters_while < 10001:
+        while loss > 1e-5:
             iters_while += 1
             print("[mu iters: %d, while iters: %d, loss: %.10f]" % (iters_mu, iters_while, loss))
 
