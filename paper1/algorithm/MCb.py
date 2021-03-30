@@ -27,7 +27,7 @@ def MCb(Z0, X, Y, b0, mu0, tau_b, tau_z):
         iters_while = 0
 
         loss = 65535
-        while loss > 1e-5:
+        while loss > 1e-5 and iters_while < 10001:
             iters_while += 1
             print("[mu iters: %d, while iters: %d, loss: %.10f]" % (iters_mu, iters_while, loss))
 
@@ -44,7 +44,7 @@ def MCb(Z0, X, Y, b0, mu0, tau_b, tau_z):
 
             Z = U @ S @ VT
 
-            loss = la.norm(Z - lastZ)
+            loss = la.norm(Z - lastZ) / la.norm(lastZ)
 
     return Z, b
 
@@ -106,6 +106,6 @@ def getW(Z, b):
     for j in range(globals.rowY):
         Y[:, j] = Y[:, j] - b
 
-    W = Y@la.pinv(X)
+    W = Y @ la.pinv(X)
 
     return W
