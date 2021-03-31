@@ -30,7 +30,7 @@ def mask(mat, corruptedPosition, rate):
     :return: the changed matrix
     """
 
-    num = int(mat.size * rate)
+    num = int(mat.size * (1 - rate))
 
     cmat = mat.astype(dtype=float)
 
@@ -63,15 +63,25 @@ def relativeFeatureImputationError(orgZ, newZ):
     return su / total
 
 
-def transductiveLabelError(orgZ, newZ):
-    orgY = orgZ[:globals.colY, :].astype(float)
-    newY = newZ[:globals.colY, :].astype(float)
+def transductiveLabelError(orgZ, newZ, newb):
+    orgY = orgZ[:globals.colY, :].copy().astype(float)
+    newY = newZ[:globals.colY, :].copy().astype(float)
+
+    for j in range(newY.shape[1]):
+        newY[:, j] = newY[:, j] + newb
 
     total = 0
 
     for i in range(orgY.shape[0]):
         for j in range(orgY.shape[1]):
-            if newY - orgY != 0:
+            if newY[i, j] >= 0.5:
+                newY[i, j] = 1
+            else:
+                newY[i, j] = 0
+
+            if newY[i, j] - orgY[i, j] != 0 and globals.corruptedPositionY.T[i, j] == 1:
                 total += 1
 
+    print(total)
+    print(globals.sizeY - globals.omegaY)
     return total / (globals.sizeY - globals.omegaY)

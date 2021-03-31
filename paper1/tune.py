@@ -5,6 +5,7 @@ from numpy import linalg as la
 import numpy as np
 from algorithm import MCb
 
+
 # Define some constants
 
 if __name__ == "__main__":

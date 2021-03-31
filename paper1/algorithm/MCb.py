@@ -9,14 +9,12 @@ def MCb(Z0, X, Y, b0, mu0, tau_b, tau_z):
     # Initialization
     tempMu = mu0
     mus = [tempMu]
-    while tempMu > 1e-5:
+    while tempMu > constants.MU:
         tempMu = tempMu * constants.ETA
         mus.append(tempMu)
 
     Z = Z0
     b = b0
-
-    lastZ = np.zeros((Z.shape[0], Z.shape[1]))
 
     # Iteration for convergence
     iters_mu = 0
@@ -40,7 +38,6 @@ def MCb(Z0, X, Y, b0, mu0, tau_b, tau_z):
             S = np.zeros((U.shape[1], VT.shape[0]))
             for i in range(0, Sigma.size):
                 S[i][i] = max(Sigma[i] - tau_z * mu, 0)
-                # S[i][i] = max(Sigma[i] - mu, 0)
 
             Z = U @ S @ VT
 
